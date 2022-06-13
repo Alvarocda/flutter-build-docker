@@ -1,7 +1,5 @@
 FROM ubuntu
 
-ENV ANDROID_COMPILE_SDK=30
-ENV ANDROID_BUILD_TOOLS=30.0.2
 ENV ANDROID_SDK_TOOLS=7583922
 
 
@@ -15,6 +13,10 @@ RUN apt-get install --no-install-recommends -y wget
 RUN apt-get install -y unzip
 RUN apt-get install --no-install-recommends -y curl
 RUN apt-get install sed
+RUN apt-get install gnupg -y
+RUN apt-get install gnupg1 -y
+RUN apt-get install gnupg2 -y
+RUN apt-get install apt-transport-https
 # RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-14-jdk
 
 
@@ -27,10 +29,7 @@ ENV PATH=$PATH:$JAVA_HOME/bin
 
 RUN wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip \
     && unzip android-sdk.zip -d /opt/android-sdk-linux/
-RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-28"
-RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-29"
-RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-30"
-RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-31"
+RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "platforms;android-32"
 RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "platform-tools"
 RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "build-tools;29.0.3"
 RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "build-tools;30.0.2"
