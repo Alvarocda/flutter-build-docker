@@ -14,6 +14,7 @@ RUN apt-get install --no-install-recommends -y lcov
 RUN apt-get install --no-install-recommends -y wget
 RUN apt-get install -y unzip
 RUN apt-get install --no-install-recommends -y curl
+RUN apt-get install sed
 # RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-14-jdk
 
 
@@ -47,9 +48,6 @@ RUN wget -O /opt/sonar-scanner.zip https://binaries.sonarsource.com/Distribution
 ENV PATH="$PATH:/opt/sonar-scanner/sonar-scanner-4.6.2.2472-linux/bin"
 
 RUN apt-get update
-RUN apt-get install gnupg -y
-RUN apt-get install gnupg1 -y
-RUN apt-get install gnupg2 -y
 RUN apt-get install apt-transport-https
 RUN sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
 RUN sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
@@ -57,8 +55,6 @@ RUN sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/
 RUN apt-get update
 RUN apt-get install dart
 RUN apt-get install -y libapparmor1
-RUN apt-get install -y dbus
-RUN apt-get install -y default-dbus-session-bus
 
 ENV PATH="$PATH:/usr/lib/dart/bin"
 
