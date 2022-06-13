@@ -1,6 +1,13 @@
 ## Flutter specialized image (Tested with GitLab)
 This is the first image i've created with Docker  
 This image is specialized in testing and building Android Flutter apps
+
+### Docker Hub
+Image url: https://hub.docker.com/r/alvarocda/flutter  
+
+docker pull alvarocda/flutter:latest
+
+
 ### This image contains
 - Android SDK 32
 - Build Tools 29.0.3
