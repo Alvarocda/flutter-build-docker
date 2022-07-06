@@ -18,6 +18,11 @@ RUN apt-get install apt-transport-https
 RUN apt-get install -y libapparmor1
 RUN apt-get install -y sshpass
 RUN apt-get install -y pkg-config
+RUN apt-get install -y clang
+RUN apt-get install -y cmake
+RUN apt-get install -y ninja-build
+RUN apt-get install -y libgtk-3-dev
+
 # Add dart sdk to source list and install it
 RUN sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
 RUN sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
