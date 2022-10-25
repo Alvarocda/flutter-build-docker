@@ -37,6 +37,7 @@ ENV SDK_MANAGER_PATH=$ANDROID_HOME/cmdline-tools/bin/sdkmanager
 ENV PATH=$PATH:$SDK_MANAGER_PATH
 RUN wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip \
     && unzip android-sdk.zip -d /opt/android-sdk-linux/
+RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platforms;android-28"
 RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platforms;android-30"
 RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platforms;android-32"
 RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platforms;android-33"
