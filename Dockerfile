@@ -1,33 +1,32 @@
 FROM ubuntu
-
-ENV ANDROID_SDK_TOOLS=8512546
-
-RUN apt-get update
-# RUN apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y default-jdk
-RUN apt-get install --no-install-recommends -y git
-RUN apt-get install --no-install-recommends -y lcov
-RUN apt-get install --no-install-recommends -y wget
-RUN apt-get install -y unzip
-RUN apt-get install --no-install-recommends -y curl
-RUN apt-get install sed
-RUN apt-get install gnupg -y
-RUN apt-get install gnupg1 -y
-RUN apt-get install gnupg2 -y
-RUN apt-get install apt-transport-https
-RUN apt-get install -y libapparmor1
-RUN apt-get install -y sshpass
-RUN apt-get install -y pkg-config
-RUN apt-get install -y clang
-RUN apt-get install -y cmake
-RUN apt-get install -y ninja-build
-RUN apt-get install -y libgtk-3-dev
-
+# https://developer.android.com/studio?hl=pt-br#command-tools
+ENV ANDROID_SDK_TOOLS=10406996
 # Add dart sdk to source list and install it
 RUN sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
 RUN sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
 RUN apt-get update
-RUN apt-get install dart
+# RUN apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive
+RUN apt-get install --no-install-recommends -y openjdk-17-jdk \
+    openjdk-17-jre \
+    git \
+    lcov \
+    wget \
+    unzip \
+    curl \
+    sed \
+    gnupg \
+    gnupg1 \
+    gnupg2 \
+    apt-transport-https \
+    libapparmor1 \
+    sshpass \
+    pkg-config \
+    clang \
+    cmake \
+    ninja-build \
+    libgtk-3-dev \
+    dart
 
 ENV ANDROID_HOME=/opt/android-sdk-linux
 ENV JAVA_HOME=/usr
@@ -37,30 +36,27 @@ ENV SDK_MANAGER_PATH=$ANDROID_HOME/cmdline-tools/bin/sdkmanager
 ENV PATH=$PATH:$SDK_MANAGER_PATH
 RUN wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip \
     && unzip android-sdk.zip -d /opt/android-sdk-linux/
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platforms;android-28"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platforms;android-30"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platforms;android-32"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platforms;android-33"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "platform-tools"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "build-tools;29.0.3"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "build-tools;30.0.0"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "build-tools;30.0.2"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "build-tools;30.0.3"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "build-tools;31.0.0"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "build-tools;32.0.0"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "build-tools;33.0.0"
-RUN echo "y" | $SDK_MANAGER_PATH --sdk_root=$ANDROID_HOME "cmdline-tools;latest"
+
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-32"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-33"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-34"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platform-tools"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;31.0.0"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;32.0.0"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;33.0.0"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;34.0.0"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "cmdline-tools;latest"
 
 # RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "extras;android;m2repository"
 # RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "extras;google;google_play_services"
 # RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "extras;google;m2repository"
-RUN yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses || echo "Failed" \
+RUN yes | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses || echo "Failed" \
     && rm android-sdk.zip
 
-RUN wget -O /opt/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip \
+RUN wget -O /opt/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip \
     && unzip /opt/sonar-scanner.zip -d /opt/sonar-scanner/
 
-ENV PATH="$PATH:/opt/sonar-scanner/sonar-scanner-4.6.2.2472-linux/bin"
+ENV PATH="$PATH:/opt/sonar-scanner/sonar-scanner-cli-5.0.1.3006-linux/bin"
 ENV PATH="$PATH:/usr/lib/dart/bin"
 
 RUN mkdir /opt/firebase-cli
