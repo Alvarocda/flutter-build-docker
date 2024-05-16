@@ -88,3 +88,5 @@ RUN cd /opt/flutter/examples/hello_world && \
 #
 # /opt/android-sdk-linux/tools/bin/avdmanager create avd -k 'system-images;android-18;google_apis;x86' --abi google_apis/x86 -n 'test' -d 'Nexus 4'
 # emulator -avd test -no-skin -no-audio -no-window
+
+# by Mardonio
