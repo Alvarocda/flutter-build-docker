@@ -1,6 +1,8 @@
 FROM ubuntu
 # https://developer.android.com/studio?hl=pt-br#command-tools
-ENV ANDROID_SDK_TOOLS=10406996
+ENV ANDROID_SDK_TOOLS=11076708
+RUN apt-get update
+RUN apt-get install wget gnupg gnupg1 gnupg2 -y
 # Add dart sdk to source list and install it
 RUN sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
 RUN sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
@@ -11,13 +13,9 @@ RUN apt-get install --no-install-recommends -y openjdk-17-jdk \
     openjdk-17-jre \
     git \
     lcov \
-    wget \
     unzip \
     curl \
     sed \
-    gnupg \
-    gnupg1 \
-    gnupg2 \
     apt-transport-https \
     libapparmor1 \
     sshpass \
@@ -25,8 +23,7 @@ RUN apt-get install --no-install-recommends -y openjdk-17-jdk \
     clang \
     cmake \
     ninja-build \
-    libgtk-3-dev \
-    dart
+    libgtk-3-dev
 
 ENV ANDROID_HOME=/opt/android-sdk-linux
 ENV JAVA_HOME=/usr
@@ -37,15 +34,20 @@ ENV PATH=$PATH:$SDK_MANAGER_PATH
 RUN wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS}_latest.zip \
     && unzip android-sdk.zip -d /opt/android-sdk-linux/
 
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-32"
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-33"
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-34"
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platform-tools"
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;31.0.0"
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;32.0.0"
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;33.0.0"
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;34.0.0"
-RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "cmdline-tools;latest"
+RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "emulator" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-30" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-31" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-32" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-33" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-34" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platform-tools" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;30.0.3" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;31.0.0" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;32.0.0" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;33.0.0" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;34.0.0" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "cmdline-tools;latest"
+
 
 # RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "extras;android;m2repository"
 # RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "extras;google;google_play_services"
@@ -74,8 +76,8 @@ ENV PATH=$PATH:/opt/flutter/bin
 # RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "emulator"
 # RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "system-images;android-18;google_apis;x86"
 # RUN echo "y" | /opt/android-sdk-linux/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "system-images;android-27;google_apis_playstore;x86"
-RUN flutter config  --no-analytics
-RUN flutter precache
+RUN flutter config  --no-analytics && \
+    flutter precache
 RUN yes "y" | flutter doctor --android-licenses
 RUN flutter doctor -v
 RUN apt-get clean
@@ -85,6 +87,8 @@ RUN cd /opt/flutter/examples/hello_world && \
     flutter build apk --split-per-abi && \
     flutter build appbundle
 
+
+# RUN flutter --version
 #
 # /opt/android-sdk-linux/tools/bin/avdmanager create avd -k 'system-images;android-18;google_apis;x86' --abi google_apis/x86 -n 'test' -d 'Nexus 4'
 # emulator -avd test -no-skin -no-audio -no-window
