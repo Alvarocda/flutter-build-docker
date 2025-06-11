@@ -1,6 +1,6 @@
 FROM ubuntu
 # https://developer.android.com/studio?hl=pt-br#command-tools
-ENV ANDROID_SDK_TOOLS=11076708
+ENV ANDROID_SDK_TOOLS=13114758
 RUN apt-get update
 RUN apt-get install wget gnupg gnupg1 gnupg2 -y
 # Add dart sdk to source list and install it
@@ -40,12 +40,16 @@ RUN echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "emulator" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-32" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-33" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-34" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-35" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platforms;android-36" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "platform-tools" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;30.0.3" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;31.0.0" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;32.0.0" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;33.0.0" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;34.0.0" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;35.0.0" && \
+    echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "build-tools;36.0.0" && \
     echo "y" | ${SDK_MANAGER_PATH} --sdk_root=${ANDROID_HOME} "cmdline-tools;latest"
 
 
