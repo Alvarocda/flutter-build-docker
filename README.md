@@ -9,12 +9,22 @@ docker pull alvarocda/flutter:latest
 
 
 ### This image contains
+- Android SDK 30
+- Android SDK 31
 - Android SDK 32
-- Build Tools 29.0.3
-- Build Tools 30.0.2
+- Android SDK 33
+- Android SDK 34
+- Android SDK 35
+- Android SDK 36
+
 - Build Tools 30.0.3
 - Build Tools 31.0.0
 - Build Tools 32.0.0
+- Build Tools 33.0.0
+- Build Tools 34.0.0
+- Build Tools 35.0.0
+- Build Tools 36.0.0
+
 - LCOV
 - sed
 - Flutter Latest Stable version (/opt/flutter/bin)
